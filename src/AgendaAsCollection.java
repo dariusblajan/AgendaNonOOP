@@ -11,7 +11,7 @@ import java.util.Scanner;
  * Created by condor on 10/02/15.
  * FastTrackIT, 2015
  * <p/>
- * DEMO ONLY PURPOSES, IT MIGHT CONTAINS INTENTIONALLY ERRORS OR ESPECIALLY BAD PRACTICES
+ * DEMO ONLY PURPOSES, IT MIGHT CONTAIN INTENTIONALLY ERRORS OR ESPECIALLY BAD PRACTICES
  */
 public class AgendaAsCollection {
 
@@ -60,11 +60,13 @@ public class AgendaAsCollection {
 
     private void createItem() {
         HandleKeyboard handleKeyboard = new HandleKeyboard().invokeItem();
-        String name = handleKeyboard.getName();
+        String firstName = handleKeyboard.getFirstName();
+        String lastName = handleKeyboard.getLastName();
         String phone = handleKeyboard.getPhone();
 
         Item item = new Item();
-        item.setName(name);
+        item.setFirstName(firstName);
+        item.setLastName(lastName);
         item.setPhoneNumber(phone);
 
         agenda.add(item);
@@ -77,11 +79,13 @@ public class AgendaAsCollection {
         int indexItem = searchAgenda();
         if (indexItem != -1) { //found
             HandleKeyboard handleKeyboard = new HandleKeyboard().invokeItem();
-            String name = handleKeyboard.getName(); // so we can change the name as well
+            String firstName = handleKeyboard.getFirstName(); // so we can change the name as well
+            String lastName = handleKeyboard.getLastName();
             String phone = handleKeyboard.getPhone();
 
             Item item = new Item();
-            item.setName(name);
+            item.setFirstName(firstName);
+            item.setLastName(lastName);
             item.setPhoneNumber(phone);
             agenda.remove(indexItem);
             agenda.add(item);
@@ -108,16 +112,19 @@ public class AgendaAsCollection {
 
     /* returns the index where the name was found or -1 if the name is not in the agenda*/
     private int searchAgenda() {
-        HandleKeyboard handleKeyboard = new HandleKeyboard().invokeItemName();
-        String name = handleKeyboard.getName();
+        HandleKeyboard handleKeyboard = new HandleKeyboard().invokeItemLastName();
+        //HandleKeyboard handleKeyboard = new HandleKeyboard().invokeItemLastName();
+        //String firstName = handleKeyboard.getFirstName();
+        String lastName = handleKeyboard.getLastName();
         int indexWhereItWasFound = -1;
 
 
         // for (Item anAgenda : agenda) might not work here , we need the index so I keep the original form of for
         for (int i = 0; i < agenda.size(); i++) {
             Item item = agenda.get(i);
-            String nameInAgenda = item.getName();
-            if (name.equalsIgnoreCase(nameInAgenda)) {
+            //String fNameInAgenda = item.getFirstName();
+            String lNameInAgenda = item.getLastName();
+            if (lastName.equalsIgnoreCase(lNameInAgenda)) {
                 indexWhereItWasFound = i;
                 break;
             }
@@ -128,12 +135,15 @@ public class AgendaAsCollection {
 
     /* returns the index where the name was found or -1 if the name is not in the agenda */
     private void searchAgendaAndDisplay() {
+        System.out.println("--- Search by last name ---");
         int index = searchAgenda();
         if (index != -1) { //found
             Item item = agenda.get(index);
-            String name = item.getName();
+            String firstName = item.getFirstName();
+            String lastName = item.getLastName();
             String phoneNumber = item.getPhoneNumber();
-            System.out.println("Name:" + name);
+            System.out.println("First name: " + firstName);
+            System.out.println("Last name: " + lastName);
             System.out.println("Phone Number:" + phoneNumber);
         } else {
             System.out.println("This name does not exists in agenda!");
@@ -145,7 +155,8 @@ public class AgendaAsCollection {
 
         System.out.println("Your Agenda:");
         for (Item anAgenda : agenda) {
-            String name = anAgenda.getName();
+            String name = anAgenda.getFirstName();
+            name += " "+anAgenda.getLastName();
             String telephone = anAgenda.getPhoneNumber();
             System.out.println("Name: " + name + " ;Phone: " + telephone);
         }
@@ -228,7 +239,8 @@ public class AgendaAsCollection {
 
 
     private class HandleKeyboard {
-        private String name;
+        private String firstName;
+        private String lastName;
         private String phone;
 
         private int option;
@@ -236,10 +248,9 @@ public class AgendaAsCollection {
         private String yesNo;
 
 
-        public String getName() {
-            return name;
-        }
+        public String getFirstName() {return firstName; }
 
+        public String getLastName() { return lastName;}
         public String getPhone() {
             return phone;
         }
@@ -254,17 +265,26 @@ public class AgendaAsCollection {
 
         public HandleKeyboard invokeItem() {
             Scanner s = new Scanner(System.in);
-            System.out.print("Name: ");
-            name = s.nextLine();
+            System.out.print("FIrst name: ");
+            firstName = s.nextLine();
+            System.out.print("Last name: ");
+            lastName = s.nextLine();
             System.out.print("Phone Number: ");
             phone = s.nextLine();
             return this;
         }
 
-        public HandleKeyboard invokeItemName() {
+        public HandleKeyboard invokeItemFirstName() {
             Scanner s = new Scanner(System.in);
-            System.out.print("Name: ");
-            name = s.nextLine();
+            System.out.print("First name: ");
+            firstName = s.nextLine();
+            return this;
+        }
+
+        public HandleKeyboard invokeItemLastName() {
+            Scanner s = new Scanner(System.in);
+            System.out.print("Last name: ");
+            lastName = s.nextLine();
             return this;
         }
 
